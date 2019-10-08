@@ -68,20 +68,22 @@ namespace Nabo
 	}
 
 	//! Brute-force nearest neighbour
-	template<typename T, typename CloudType = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> >
-	struct BruteForceSearch : public NearestNeighbourSearch<T, CloudType>
+	template<typename T, int Dim = Eigen::Dynamic>
+	struct BruteForceSearch : public NearestNeighbourSearch<T, Dim>
 	{
-		typedef typename NearestNeighbourSearch<T, CloudType>::Vector Vector;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Matrix Matrix;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Index Index;
-		typedef typename NearestNeighbourSearch<T, CloudType>::IndexVector IndexVector;
-		typedef typename NearestNeighbourSearch<T, CloudType>::IndexMatrix IndexMatrix;
+		  using CloudType = typename NearestNeighbourSearch<T, Dim>::Cloud_T;
+
+		typedef typename NearestNeighbourSearch<T, Dim>::Vector Vector;
+		typedef typename NearestNeighbourSearch<T, Dim>::Matrix Matrix;
+		typedef typename NearestNeighbourSearch<T, Dim>::Index Index;
+		typedef typename NearestNeighbourSearch<T, Dim>::IndexVector IndexVector;
+		typedef typename NearestNeighbourSearch<T, Dim>::IndexMatrix IndexMatrix;
 		
-		using NearestNeighbourSearch<T, CloudType>::dim;
-		using NearestNeighbourSearch<T, CloudType>::creationOptionFlags;
-		using NearestNeighbourSearch<T, CloudType>::checkSizesKnn;
-		using NearestNeighbourSearch<T, CloudType>::minBound;
-		using NearestNeighbourSearch<T, CloudType>::maxBound;
+		using NearestNeighbourSearch<T, Dim>::dim;
+		using NearestNeighbourSearch<T, Dim>::creationOptionFlags;
+		using NearestNeighbourSearch<T, Dim>::checkSizesKnn;
+		using NearestNeighbourSearch<T, Dim>::minBound;
+		using NearestNeighbourSearch<T, Dim>::maxBound;
 
 		//! constructor, calls NearestNeighbourSearch<T>(cloud)
 		BruteForceSearch(const CloudType& cloud, const Index dim, const unsigned creationOptionFlags);
@@ -90,21 +92,24 @@ namespace Nabo
 	};
 	
 	//! KDTree, unbalanced, points in leaves, stack, implicit bounds, ANN_KD_SL_MIDPT, optimised implementation
-	template<typename T, typename Heap, typename CloudType = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> >
-	struct KDTreeUnbalancedPtInLeavesImplicitBoundsStackOpt: public NearestNeighbourSearch<T, CloudType>
+	template<typename T, typename Heap, int Dim = Eigen::Dynamic>
+	struct KDTreeUnbalancedPtInLeavesImplicitBoundsStackOpt: public NearestNeighbourSearch<T, Dim>
 	{
-		typedef typename NearestNeighbourSearch<T, CloudType>::Vector Vector;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Matrix Matrix;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Index Index;
-		typedef typename NearestNeighbourSearch<T, CloudType>::IndexVector IndexVector;
-		typedef typename NearestNeighbourSearch<T, CloudType>::IndexMatrix IndexMatrix;
+
+      using CloudType = typename NearestNeighbourSearch<T, Dim>::Cloud_T;
+
+		typedef typename NearestNeighbourSearch<T, Dim>::Vector Vector;
+		typedef typename NearestNeighbourSearch<T, Dim>::Matrix Matrix;
+		typedef typename NearestNeighbourSearch<T, Dim>::Index Index;
+		typedef typename NearestNeighbourSearch<T, Dim>::IndexVector IndexVector;
+		typedef typename NearestNeighbourSearch<T, Dim>::IndexMatrix IndexMatrix;
 		
-		using NearestNeighbourSearch<T, CloudType>::dim;
-		using NearestNeighbourSearch<T, CloudType>::cloud;
-		using NearestNeighbourSearch<T, CloudType>::creationOptionFlags;
-		using NearestNeighbourSearch<T, CloudType>::minBound;
-		using NearestNeighbourSearch<T, CloudType>::maxBound;
-		using NearestNeighbourSearch<T, CloudType>::checkSizesKnn;
+		using NearestNeighbourSearch<T, Dim>::dim;
+		using NearestNeighbourSearch<T, Dim>::cloud;
+		using NearestNeighbourSearch<T, Dim>::creationOptionFlags;
+		using NearestNeighbourSearch<T, Dim>::minBound;
+		using NearestNeighbourSearch<T, Dim>::maxBound;
+		using NearestNeighbourSearch<T, Dim>::checkSizesKnn;
 		
 	protected:
 		//! indices of points during kd-tree construction

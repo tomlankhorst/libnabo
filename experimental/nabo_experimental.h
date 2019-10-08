@@ -38,13 +38,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace Nabo
 {
 	// KDTree, balanced, points in nodes
-	template<typename T, typename CloudType>
-	struct KDTreeBalancedPtInNodes:public NearestNeighbourSearch<T, CloudType>
+	template<typename T, int Dim>
+	struct KDTreeBalancedPtInNodes:public NearestNeighbourSearch<T, Dim>
 	{
-		typedef typename NearestNeighbourSearch<T, CloudType>::Vector Vector;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Matrix Matrix;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Index Index;
-		typedef typename NearestNeighbourSearch<T, CloudType>::IndexVector IndexVector;
+		typedef typename NearestNeighbourSearch<T, Dim>::Vector Vector;
+		typedef typename NearestNeighbourSearch<T, Dim>::Matrix Matrix;
+		typedef typename NearestNeighbourSearch<T, Dim>::Index Index;
+		typedef typename NearestNeighbourSearch<T, Dim>::IndexVector IndexVector;
 		
 	protected:
 		struct BuildPoint
@@ -84,24 +84,24 @@ namespace Nabo
 		void dump(const Vector minValues, const Vector maxValues, const size_t pos) const;
 		
 	protected:
-		KDTreeBalancedPtInNodes(const CloudType& cloud);
+		KDTreeBalancedPtInNodes(const typename NearestNeighbourSearch<T, Dim>::CloudType& cloud);
 	};
 	
 	// KDTree, balanced, points in nodes, priority queue
-	template<typename T, typename CloudType>
-	struct KDTreeBalancedPtInNodesPQ: public KDTreeBalancedPtInNodes<T, CloudType>
+	template<typename T, int Dim>
+	struct KDTreeBalancedPtInNodesPQ: public KDTreeBalancedPtInNodes<T, Dim>
 	{
-		typedef typename NearestNeighbourSearch<T, CloudType>::Vector Vector;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Matrix Matrix;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Index Index;
-		typedef typename NearestNeighbourSearch<T, CloudType>::IndexVector IndexVector;
-		typedef typename KDTreeBalancedPtInNodes<T, CloudType>::Node Node;
-		typedef typename KDTreeBalancedPtInNodes<T, CloudType>::Nodes Nodes;
+		typedef typename NearestNeighbourSearch<T, Dim>::Vector Vector;
+		typedef typename NearestNeighbourSearch<T, Dim>::Matrix Matrix;
+		typedef typename NearestNeighbourSearch<T, Dim>::Index Index;
+		typedef typename NearestNeighbourSearch<T, Dim>::IndexVector IndexVector;
+		typedef typename KDTreeBalancedPtInNodes<T, Dim>::Node Node;
+		typedef typename KDTreeBalancedPtInNodes<T, Dim>::Nodes Nodes;
 		
-		using NearestNeighbourSearch<T, CloudType>::statistics;
-		using KDTreeBalancedPtInNodes<T, CloudType>::nodes;
-		using KDTreeBalancedPtInNodes<T, CloudType>::childLeft;
-		using KDTreeBalancedPtInNodes<T, CloudType>::childRight;
+		using NearestNeighbourSearch<T, Dim>::statistics;
+		using KDTreeBalancedPtInNodes<T, Dim>::nodes;
+		using KDTreeBalancedPtInNodes<T, Dim>::childLeft;
+		using KDTreeBalancedPtInNodes<T, Dim>::childRight;
 		
 	protected:
 		struct SearchElement
@@ -115,25 +115,25 @@ namespace Nabo
 		};
 		
 	public:
-		KDTreeBalancedPtInNodesPQ(const CloudType& cloud);
+		KDTreeBalancedPtInNodesPQ(const typename NearestNeighbourSearch<T, Dim>::CloudType& cloud);
 		virtual IndexVector knn(const Vector& query, const Index k, const T epsilon, const unsigned optionFlags);
 	};
 	
 	// KDTree, balanced, points in nodes, stack
-	template<typename T, typename CloudType>
-	struct KDTreeBalancedPtInNodesStack: public KDTreeBalancedPtInNodes<T, CloudType>
+	template<typename T, int Dim>
+	struct KDTreeBalancedPtInNodesStack: public KDTreeBalancedPtInNodes<T, Dim>
 	{
-		typedef typename NearestNeighbourSearch<T, CloudType>::Vector Vector;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Matrix Matrix;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Index Index;
-		typedef typename NearestNeighbourSearch<T, CloudType>::IndexVector IndexVector;
-		typedef typename KDTreeBalancedPtInNodes<T, CloudType>::Node Node;
-		typedef typename KDTreeBalancedPtInNodes<T, CloudType>::Nodes Nodes;
+		typedef typename NearestNeighbourSearch<T, Dim>::Vector Vector;
+		typedef typename NearestNeighbourSearch<T, Dim>::Matrix Matrix;
+		typedef typename NearestNeighbourSearch<T, Dim>::Index Index;
+		typedef typename NearestNeighbourSearch<T, Dim>::IndexVector IndexVector;
+		typedef typename KDTreeBalancedPtInNodes<T, Dim>::Node Node;
+		typedef typename KDTreeBalancedPtInNodes<T, Dim>::Nodes Nodes;
 		
-		using NearestNeighbourSearch<T, CloudType>::statistics;
-		using KDTreeBalancedPtInNodes<T, CloudType>::nodes;
-		using KDTreeBalancedPtInNodes<T, CloudType>::childLeft;
-		using KDTreeBalancedPtInNodes<T, CloudType>::childRight;
+		using NearestNeighbourSearch<T, Dim>::statistics;
+		using KDTreeBalancedPtInNodes<T, Dim>::nodes;
+		using KDTreeBalancedPtInNodes<T, Dim>::childLeft;
+		using KDTreeBalancedPtInNodes<T, Dim>::childRight;
 		
 		typedef IndexHeapSTL<Index, T> Heap;
 		
@@ -141,24 +141,24 @@ namespace Nabo
 		void recurseKnn(const Vector& query, const size_t n, T rd, Heap& heap, Vector& off, const T maxError, const bool allowSelfMatch);
 		
 	public:
-		KDTreeBalancedPtInNodesStack(const CloudType& cloud);
+		KDTreeBalancedPtInNodesStack(const typename NearestNeighbourSearch<T, Dim>::CloudType& cloud);
 		virtual IndexVector knn(const Vector& query, const Index k, const T epsilon, const unsigned optionFlags);
 	};
 	
 	
 	//  KDTree, balanced, points in leaves, stack
-	template<typename T, typename CloudType>
-	struct KDTreeBalancedPtInLeavesStack: public NearestNeighbourSearch<T, CloudType>
+	template<typename T, int Dim>
+	struct KDTreeBalancedPtInLeavesStack: public NearestNeighbourSearch<T, Dim>
 	{
-		typedef typename NearestNeighbourSearch<T, CloudType>::Vector Vector;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Matrix Matrix;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Index Index;
-		typedef typename NearestNeighbourSearch<T, CloudType>::IndexVector IndexVector;
+		typedef typename NearestNeighbourSearch<T, Dim>::Vector Vector;
+		typedef typename NearestNeighbourSearch<T, Dim>::Matrix Matrix;
+		typedef typename NearestNeighbourSearch<T, Dim>::Index Index;
+		typedef typename NearestNeighbourSearch<T, Dim>::IndexVector IndexVector;
 		
-		using NearestNeighbourSearch<T, CloudType>::statistics;
-		using NearestNeighbourSearch<T, CloudType>::cloud;
-		using NearestNeighbourSearch<T, CloudType>::minBound;
-		using NearestNeighbourSearch<T, CloudType>::maxBound;
+		using NearestNeighbourSearch<T, Dim>::statistics;
+		using NearestNeighbourSearch<T, Dim>::cloud;
+		using NearestNeighbourSearch<T, Dim>::minBound;
+		using NearestNeighbourSearch<T, Dim>::maxBound;
 		
 	protected:
 		struct BuildPoint
@@ -199,24 +199,24 @@ namespace Nabo
 		void recurseKnn(const Vector& query, const size_t n, T rd, Heap& heap, Vector& off, const T maxError, const bool allowSelfMatch);
 		
 	public:
-		KDTreeBalancedPtInLeavesStack(const CloudType& cloud, const bool balanceVariance);
+		KDTreeBalancedPtInLeavesStack(const typename NearestNeighbourSearch<T, Dim>::CloudType& cloud, const bool balanceVariance);
 		virtual IndexVector knn(const Vector& query, const Index k, const T epsilon, const unsigned optionFlags);
 	};
 	
 	//  KDTree, unbalanced, points in leaves, stack, implicit bounds, ANN_KD_SL_MIDPT
-	template<typename T, typename Heap, typename CloudType>
-	struct KDTreeUnbalancedPtInLeavesImplicitBoundsStack: public NearestNeighbourSearch<T, CloudType>
+	template<typename T, typename Heap, int Dim>
+	struct KDTreeUnbalancedPtInLeavesImplicitBoundsStack: public NearestNeighbourSearch<T, Dim>
 	{
-		typedef typename NearestNeighbourSearch<T, CloudType>::Vector Vector;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Matrix Matrix;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Index Index;
-		typedef typename NearestNeighbourSearch<T, CloudType>::IndexVector IndexVector;
-		typedef typename NearestNeighbourSearch<T, CloudType>::IndexMatrix IndexMatrix;
+		typedef typename NearestNeighbourSearch<T, Dim>::Vector Vector;
+		typedef typename NearestNeighbourSearch<T, Dim>::Matrix Matrix;
+		typedef typename NearestNeighbourSearch<T, Dim>::Index Index;
+		typedef typename NearestNeighbourSearch<T, Dim>::IndexVector IndexVector;
+		typedef typename NearestNeighbourSearch<T, Dim>::IndexMatrix IndexMatrix;
 		
-		using NearestNeighbourSearch<T, CloudType>::statistics;
-		using NearestNeighbourSearch<T, CloudType>::cloud;
-		using NearestNeighbourSearch<T, CloudType>::minBound;
-		using NearestNeighbourSearch<T, CloudType>::maxBound;
+		using NearestNeighbourSearch<T, Dim>::statistics;
+		using NearestNeighbourSearch<T, Dim>::cloud;
+		using NearestNeighbourSearch<T, Dim>::minBound;
+		using NearestNeighbourSearch<T, Dim>::maxBound;
 		
 	protected:
 		struct BuildPoint
@@ -264,25 +264,25 @@ namespace Nabo
 		void recurseKnn(const Vector& query, const unsigned n, T rd, Heap& heap, Vector& off, const T maxError, const bool allowSelfMatch);
 		
 	public:
-		KDTreeUnbalancedPtInLeavesImplicitBoundsStack(const CloudType& cloud);
+		KDTreeUnbalancedPtInLeavesImplicitBoundsStack(const typename NearestNeighbourSearch<T, Dim>::CloudType& cloud);
 		virtual IndexVector knn(const Vector& query, const Index k, const T epsilon, const unsigned optionFlags);
 		virtual IndexMatrix knnM(const Matrix& query, const Index k, const T epsilon, const unsigned optionFlags);
 	};
 	
 	//  KDTree, unbalanced, points in leaves, stack, explicit bounds, ANN_KD_SL_MIDPT
-	template<typename T, typename CloudType>
-	struct KDTreeUnbalancedPtInLeavesExplicitBoundsStack: public NearestNeighbourSearch<T, CloudType>
+	template<typename T, int Dim>
+	struct KDTreeUnbalancedPtInLeavesExplicitBoundsStack: public NearestNeighbourSearch<T, Dim>
 	{
-		typedef typename NearestNeighbourSearch<T, CloudType>::Vector Vector;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Matrix Matrix;
-		typedef typename NearestNeighbourSearch<T, CloudType>::Index Index;
-		typedef typename NearestNeighbourSearch<T, CloudType>::IndexVector IndexVector;
+		typedef typename NearestNeighbourSearch<T, Dim>::Vector Vector;
+		typedef typename NearestNeighbourSearch<T, Dim>::Matrix Matrix;
+		typedef typename NearestNeighbourSearch<T, Dim>::Index Index;
+		typedef typename NearestNeighbourSearch<T, Dim>::IndexVector IndexVector;
 		
 		
-		using NearestNeighbourSearch<T, CloudType>::statistics;
-		using NearestNeighbourSearch<T, CloudType>::cloud;
-		using NearestNeighbourSearch<T, CloudType>::minBound;
-		using NearestNeighbourSearch<T, CloudType>::maxBound;
+		using NearestNeighbourSearch<T, Dim>::statistics;
+		using NearestNeighbourSearch<T, Dim>::cloud;
+		using NearestNeighbourSearch<T, Dim>::minBound;
+		using NearestNeighbourSearch<T, Dim>::maxBound;
 		
 	protected:
 		struct BuildPoint
@@ -322,7 +322,7 @@ namespace Nabo
 		void recurseKnn(const Vector& query, const size_t n, T rd, Heap& heap, const T maxError, const bool allowSelfMatch);
 		
 	public:
-		KDTreeUnbalancedPtInLeavesExplicitBoundsStack(const CloudType& cloud);
+		KDTreeUnbalancedPtInLeavesExplicitBoundsStack(const typename NearestNeighbourSearch<T, Dim>::CloudType& cloud);
 		virtual IndexVector knn(const Vector& query, const Index k, const T epsilon, const unsigned optionFlags);
 	};
 }

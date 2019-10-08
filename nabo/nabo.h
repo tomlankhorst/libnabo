@@ -252,23 +252,23 @@ namespace Nabo
 				return defaultValue;
 		}
 	};
-	
-	//! Nearest neighbour search interface, templatized on scalar type
-	template<typename T, typename Cloud_T = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> >
-	struct NearestNeighbourSearch
+
+    template <typename T, int Dim = Eigen::Dynamic>
+    struct NearestNeighbourSearch
 	{
+	    typedef typename Eigen::Matrix<T, Dim, Eigen::Dynamic> Cloud_T;
 		//! an Eigen vector of type T, to hold the coordinates of a point
-		typedef typename Eigen::Matrix<T, Eigen::Dynamic, 1> Vector; 
+		typedef typename Eigen::Matrix<T, Dim, 1> Vector;
 		//! a column-major Eigen matrix in which each column is a point; this matrix has dim rows
-		typedef typename Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> Matrix;
+		typedef typename Eigen::Matrix<T, Dim, Eigen::Dynamic> Matrix;
 		//! a column-major Eigen matrix in which each column is a point; this matrix has dim rows
 		typedef Cloud_T CloudType;
 		//! an index to a Vector or a Matrix, for refering to data points
 		typedef int Index;
 		//! a vector of indices to data points
-		typedef typename Eigen::Matrix<Index, Eigen::Dynamic, 1> IndexVector;
+		typedef typename Eigen::Matrix<Index, Dim, 1> IndexVector;
 		//! a matrix of indices to data points
-		typedef typename Eigen::Matrix<Index, Eigen::Dynamic, Eigen::Dynamic> IndexMatrix;
+		typedef typename Eigen::Matrix<Index, Dim, Eigen::Dynamic> IndexMatrix;
 		
 		//! the reference to the data-point cloud, which must remain valid during the lifetime of the NearestNeighbourSearch object
 		const CloudType& cloud;
@@ -285,6 +285,8 @@ namespace Nabo
 		static constexpr Index InvalidIndex = invalidIndex<Index>();
 		//! the invalid value
 		static constexpr T InvalidValue = invalidValue<T>();
+
+        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 		//! type of search
 		enum SearchType
@@ -439,7 +441,8 @@ namespace Nabo
 			\param maxRadii if non 0, maximum radii, must be of size k */
 		void checkSizesKnn(const Matrix& query, const IndexMatrix& indices, const Matrix& dists2, const Index k, const unsigned optionFlags, const Vector* maxRadii = 0) const;
 	};
-	
+
+
 	// Convenience typedefs
 	
 	//! nearest neighbour search with scalars of type float
